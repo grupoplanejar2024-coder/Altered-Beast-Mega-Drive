@@ -10,14 +10,89 @@
         .badge { background: #e74c3c; color: #fff; padding: 4px 12px; border-radius: 20px; font-weight: bold; font-size: 14px; }
         #game-card { max-width: 500px; margin: 20px auto; background: #1e1e1e; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.5); }
 
-        .cover-container {
+        /* Área da capa em 3D */
+        .cover-scene {
             width: 100%;
-            height: 340px;
-            background-image: url('Altered Beast capa.jpeg');
-            background-size: contain;
-            background-repeat: no-repeat;
-            background-position: center;
-            background-color: #121212;
+            height: 360px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            box-sizing: border-box;
+            background: radial-gradient(circle at 50% 35%, #26201b 0%, #121212 75%);
+            perspective: 900px;
+            touch-action: none;
+        }
+
+        .cover-3d {
+            --rx: 0deg;
+            --ry: 0deg;
+            --gx: 50%;
+            --gy: 50%;
+            position: relative;
+            height: 100%;
+            aspect-ratio: 3 / 4;
+            border-radius: 10px;
+            transform-style: preserve-3d;
+            transform: rotateX(var(--rx)) rotateY(var(--ry)) translateZ(0);
+            transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s ease;
+            box-shadow:
+                0 18px 35px rgba(0, 0, 0, 0.75),
+                0 0 0 1px rgba(255, 255, 255, 0.12);
+        }
+
+        .cover-scene:hover .cover-3d,
+        .cover-scene.is-interacting .cover-3d {
+            transition: transform 0.08s linear, box-shadow 0.2s ease;
+            box-shadow:
+                0 26px 45px rgba(0, 0, 0, 0.85),
+                0 0 24px rgba(231, 76, 60, 0.22),
+                0 0 0 1px rgba(255, 255, 255, 0.22);
+        }
+
+        .cover-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 10px;
+            display: block;
+            transform: translateZ(12px);
+            user-select: none;
+            -webkit-user-drag: none;
+        }
+
+        /* Borda de espessura / relevo do estojo */
+        .cover-3d::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: 10px;
+            border: 2px solid rgba(255, 210, 140, 0.18);
+            transform: translateZ(6px);
+            pointer-events: none;
+        }
+
+        /* Reflexo de luz dinâmico (gloss) */
+        .cover-glare {
+            position: absolute;
+            inset: 0;
+            border-radius: 10px;
+            background: radial-gradient(
+                circle at var(--gx) var(--gy),
+                rgba(255, 255, 255, 0.32) 0%,
+                rgba(255, 200, 120, 0.10) 28%,
+                rgba(255, 255, 255, 0) 62%
+            );
+            opacity: 0;
+            transition: opacity 0.25s ease;
+            transform: translateZ(18px);
+            pointer-events: none;
+            mix-blend-mode: screen;
+        }
+
+        .cover-scene:hover .cover-glare,
+        .cover-scene.is-interacting .cover-glare {
+            opacity: 1;
         }
 
         .content { padding: 20px; }
@@ -39,7 +114,12 @@
     </header>
 
     <div id="game-card">
-        <div class="cover-container"></div>
+        <div class="cover-scene" id="cover-scene">
+            <div class="cover-3d" id="cover-3d">
+                <img class="cover-img" src="Altered Beast capa.jpeg" alt="Capa Altered Beast">
+                <div class="cover-glare"></div>
+            </div>
+        </div>
         <div class="content">
             <h1>Altered Beast</h1>
 
@@ -68,6 +148,49 @@
     </div>
 
     <script>
+        (function initCover3D() {
+            const scene = document.getElementById('cover-scene');
+            const card = document.getElementById('cover-3d');
+            if (!scene || !card) return;
+
+            const maxTilt = 16; // graus de inclinação
+
+            function updateTilt(clientX, clientY) {
+                const rect = scene.getBoundingClientRect();
+                const x = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
+                const y = Math.max(0, Math.min(1, (clientY - rect.top) / rect.height));
+
+                const rotY = ((x - 0.5) * 2 * maxTilt).toFixed(2);
+                const rotX = ((0.5 - y) * 2 * maxTilt).toFixed(2);
+
+                card.style.setProperty('--ry', `${rotY}deg`);
+                card.style.setProperty('--rx', `${rotX}deg`);
+                card.style.setProperty('--gx', `${(x * 100).toFixed(1)}%`);
+                card.style.setProperty('--gy', `${(y * 100).toFixed(1)}%`);
+            }
+
+            function resetTilt() {
+                scene.classList.remove('is-interacting');
+                card.style.setProperty('--ry', '0deg');
+                card.style.setProperty('--rx', '0deg');
+                card.style.setProperty('--gx', '50%');
+                card.style.setProperty('--gy', '50%');
+            }
+
+            scene.addEventListener('pointerenter', (e) => {
+                scene.classList.add('is-interacting');
+                updateTilt(e.clientX, e.clientY);
+            });
+
+            scene.addEventListener('pointermove', (e) => {
+                scene.classList.add('is-interacting');
+                updateTilt(e.clientX, e.clientY);
+            });
+
+            scene.addEventListener('pointerleave', resetTilt);
+            scene.addEventListener('pointercancel', resetTilt);
+        })();
+
         function iniciarJogo() {
             document.getElementById('top-header').style.display = 'none';
             document.getElementById('game-card').style.display = 'none';
