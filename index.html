@@ -1,160 +1,87 @@
 <!DOCTYPE html>
-<html lang="pt-PT">
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Altered Beast (Sega Mega Drive) — KUBO TOUCH</title>
+  <title>Altered Beast - Mega Drive</title>
   <style>
-    :root {
-      --bg: #0b0d12;
-      --card: #141822;
-      --accent: #e63946;
-      --accent-2: #ffb703;
-      --text: #f1f5f9;
-      --muted: #94a3b8;
-      --border: rgba(255, 255, 255, 0.08);
-    }
-
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
     }
-
     body {
-      background: radial-gradient(circle at top, #181e2e 0%, var(--bg) 70%);
-      color: var(--text);
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      min-height: 100vh;
+      background: #0d0f14;
+      color: #f4f6fb;
+      font-family: system-ui, -apple-system, sans-serif;
+      min-height: 100dvh;
       display: flex;
       flex-direction: column;
       align-items: center;
+      justify-content: center;
       padding: 16px;
+      gap: 14px;
     }
-
-    .container {
-      width: 100%;
-      max-width: 960px;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-
     .header {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 14px 18px;
       display: flex;
       align-items: center;
-      gap: 16px;
-      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
+      gap: 12px;
+      max-width: 720px;
+      width: 100%;
     }
-
-    .cover-thumb {
-      width: 64px;
-      height: 88px;
+    .cover {
+      width: 56px;
+      height: 78px;
       object-fit: cover;
-      border-radius: 10px;
-      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
       flex-shrink: 0;
     }
-
-    .meta {
-      flex: 1;
-      min-width: 0;
+    .title-group h1 {
+      font-size: 1.15rem;
+      line-height: 1.25;
     }
-
-    .badge {
-      display: inline-block;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--accent-2);
-      background: rgba(255, 183, 3, 0.12);
-      border: 1px solid rgba(255, 183, 3, 0.28);
-      padding: 3px 8px;
-      border-radius: 999px;
-      margin-bottom: 6px;
+    .title-group p {
+      font-size: 0.85rem;
+      color: #9aa4b8;
     }
-
-    h1 {
-      font-size: clamp(1.15rem, 2.5vw, 1.6rem);
-      line-height: 1.2;
-      margin-bottom: 4px;
-    }
-
-    .subtitle {
-      font-size: 0.88rem;
-      color: var(--muted);
-    }
-
-    .emulator-box {
-      background: #000;
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      overflow: hidden;
-      aspect-ratio: 4 / 3;
+    .game-wrapper {
       width: 100%;
-      max-height: 75vh;
-      position: relative;
-      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.65);
+      max-width: 720px;
+      aspect-ratio: 4 / 3;
+      background: #000;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.14);
     }
-
     #game {
       width: 100%;
       height: 100%;
     }
-
-    .footer-note {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 12px 16px;
-      font-size: 0.82rem;
-      color: var(--muted);
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      gap: 8px;
-    }
-
-    .footer-note strong {
-      color: var(--text);
-    }
   </style>
 </head>
 <body>
-  <div class="container">
-    <header class="header">
-      <img src="Altered Beast capa.jpeg" alt="Capa de Altered Beast" class="cover-thumb" />
-      <div class="meta">
-        <span class="badge">Sega Mega Drive • KUBO TOUCH</span>
-        <h1>Altered Beast</h1>
-        <p class="subtitle">Edição NFC / Web — Requer os direitos de utilização da ROM correspondente.</p>
-      </div>
-    </header>
-
-    <main class="emulator-box">
-      <div id="game"></div>
-    </main>
-
-    <div class="footer-note">
-      <span><strong>ROM:</strong> ALTERED  BEAST - romsbr.bin</span>
-      <span><strong>Núcleo:</strong> genesis_plus_gx</span>
+  <div class="header">
+    <img class="cover" src="Altered Beast capa_2.jpeg" alt="Capa Altered Beast" />
+    <div class="title-group">
+      <h1>Altered Beast</h1>
+      <p>Sega Mega Drive / Genesis</p>
     </div>
+  </div>
+
+  <div class="game-wrapper">
+    <div id="game"></div>
   </div>
 
   <script>
     EJS_player = "#game";
-    EJS_core = "genesis_plus_gx";
+    EJS_core = "segaMD";
     EJS_gameName = "Altered Beast";
-    EJS_gameUrl = "./ALTERED  BEAST - romsbr.bin";
-    EJS_pathtodata = "https://cdn.emulatorjs.org/stable/data/";
+    EJS_color = "#f59e0b";
     EJS_startOnLoaded = true;
-    EJS_color = "#e63946";
-    EJS_language = "pt-PT";
+    EJS_pathtodata = "https://cdn.emulatorjs.org/stable/data/";
+    // Recomenda-se renomear o arquivo para evitar problemas com espaços e colchetes na URL:
+    EJS_gameUrl = "roms/altered-beast.bin";
   </script>
   <script src="https://cdn.emulatorjs.org/stable/data/loader.js"></script>
 </body>
