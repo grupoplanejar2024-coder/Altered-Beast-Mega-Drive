@@ -1,87 +1,88 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Altered Beast - Mega Drive</title>
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-    body {
-      background: #0d0f14;
-      color: #f4f6fb;
-      font-family: system-ui, -apple-system, sans-serif;
-      min-height: 100dvh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 16px;
-      gap: 14px;
-    }
-    .header {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      max-width: 720px;
-      width: 100%;
-    }
-    .cover {
-      width: 56px;
-      height: 78px;
-      object-fit: cover;
-      border-radius: 8px;
-      border: 1px solid rgba(255, 255, 255, 0.16);
-      flex-shrink: 0;
-    }
-    .title-group h1 {
-      font-size: 1.15rem;
-      line-height: 1.25;
-    }
-    .title-group p {
-      font-size: 0.85rem;
-      color: #9aa4b8;
-    }
-    .game-wrapper {
-      width: 100%;
-      max-width: 720px;
-      aspect-ratio: 4 / 3;
-      background: #000;
-      border-radius: 12px;
-      overflow: hidden;
-      border: 1px solid rgba(255, 255, 255, 0.14);
-    }
-    #game {
-      width: 100%;
-      height: 100%;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Altered Beast - Kubo Touch</title>
+    <style>
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; background-color: #121212; color: #fff; font-family: Arial, sans-serif; }
+        header { text-align: center; padding: 15px; background: #1e1e1e; }
+        .badge { background: #e74c3c; color: #fff; padding: 4px 12px; border-radius: 20px; font-weight: bold; font-size: 14px; }
+        #game-card { max-width: 500px; margin: 20px auto; background: #1e1e1e; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.5); }
+
+        .cover-container {
+            width: 100%;
+            height: 340px;
+            background-image: url('Altered Beast capa.jpeg');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-color: #121212;
+        }
+
+        .content { padding: 20px; }
+        h1 { margin: 0 0 10px 0; font-size: 24px; color: #e74c3c; }
+        .meta-info { display: flex; gap: 10px; margin-bottom: 15px; font-size: 13px; color: #aaa; }
+        .description { font-size: 14px; line-height: 1.5; color: #ddd; margin-bottom: 15px; }
+        .details { font-size: 13px; color: #bbb; margin-bottom: 20px; }
+        .details ul { padding-left: 20px; margin: 0; }
+        .btn-play { display: block; width: 100%; padding: 12px; background: #c0392b; color: #fff; border: none; border-radius: 6px; font-weight: bold; font-size: 16px; text-align: center; text-decoration: none; cursor: pointer; box-sizing: border-box; }
+        .btn-play:hover { background: #a93226; }
+        #game-container { display: none; width: 100%; height: 100vh; }
+        #game { width: 100%; height: 100%; }
+    </style>
 </head>
 <body>
-  <div class="header">
-    <img class="cover" src="Altered Beast capa.jpeg" alt="Capa Altered Beast" />
-    <div class="title-group">
-      <h1>Altered Beast</h1>
-      <p>Sega Mega Drive / Genesis</p>
+
+    <header id="top-header">
+        <span class="badge">KUBO TOUCH</span>
+    </header>
+
+    <div id="game-card">
+        <div class="cover-container"></div>
+        <div class="content">
+            <h1>Altered Beast</h1>
+
+            <div class="meta-info">
+                <span>🎮 1-2 Jogadores</span>
+                <span>📅 1988 / 1989</span>
+                <span>🕹️ SEGA</span>
+            </div>
+
+            <p class="description">
+                Ressuscitado por Zeus na Grécia Antiga, enfrente hordas sobrenaturais, absorva esferas espirituais para ganhar massa muscular e transforme-se em feras poderosas para resgatar Atena!
+            </p>
+
+            <div class="details">
+                <ul>
+                    <li>Gênero: Beat 'em up / Ação</li>
+                </ul>
+            </div>
+
+            <button class="btn-play" onclick="iniciarJogo()">JOGAR AGORA</button>
+        </div>
     </div>
-  </div>
 
-  <div class="game-wrapper">
-    <div id="game"></div>
-  </div>
+    <div id="game-container">
+        <div id="game"></div>
+    </div>
 
-  <script>
-    EJS_player = "#game";
-    EJS_core = "segaMD";
-    EJS_gameName = "Altered Beast";
-    EJS_color = "#f59e0b";
-    EJS_startOnLoaded = true;
-    EJS_pathtodata = "https://cdn.emulatorjs.org/stable/data/";
-    EJS_gameUrl = "Altered Beast (JU) (REV 02) [!].bin";
-  </script>
-  <script src="https://cdn.emulatorjs.org/stable/data/loader.js"></script>
+    <script>
+        function iniciarJogo() {
+            document.getElementById('top-header').style.display = 'none';
+            document.getElementById('game-card').style.display = 'none';
+            document.getElementById('game-container').style.display = 'block';
+
+            window.EJS_player = '#game';
+            window.EJS_core = 'segaMD';
+            window.EJS_gameUrl = 'Altered Beast (JU) (REV 02) [!].bin';
+            window.EJS_pathtodata = 'https://cdn.emulatorjs.org/stable/data/';
+
+            const script = document.createElement('script');
+            script.src = 'https://cdn.emulatorjs.org/stable/data/loader.js';
+            document.body.appendChild(script);
+        }
+    </script>
+
 </body>
 </html>
